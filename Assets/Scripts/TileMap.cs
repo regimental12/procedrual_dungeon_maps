@@ -17,6 +17,29 @@ public class TileMap : MonoBehaviour
         buildMesh();
 	}
 
+    void BuildTexture()
+    {
+        int texWidth = 10;
+        int texHeight = 10;
+        Texture2D texture = new Texture2D(texWidth, texHeight);
+
+        for (int y = 0; y < texHeight; y++)
+        {
+            for (int x = 0; x < texWidth; x++)
+            {
+                Color c = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
+                texture.SetPixel(x, y, c);
+            }
+            
+        }
+        texture.filterMode = FilterMode.Point;
+        texture.Apply();
+        MeshRenderer mesh_renderer = GetComponent<MeshRenderer>();
+        mesh_renderer.sharedMaterials[0].mainTexture = texture;
+
+        Debug.Log("Done Texture!");
+    }
+
     public void buildMesh()
     {
         int numOfTiles = size_x * size_z;
@@ -78,6 +101,7 @@ public class TileMap : MonoBehaviour
 
         mesh_filter.mesh = mesh;
         Debug.Log("Done Mesh!");
+        BuildTexture();
     }
 	
 	
