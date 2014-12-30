@@ -10,7 +10,9 @@ public class TileMap : MonoBehaviour
     public int size_x = 100;
     public int size_z = 50;
     public float tileSize = 1.0f;
-    
+
+    public Texture2D tile;
+    public int tileResolution = 16;
 
 	void Start () 
     {
@@ -19,16 +21,20 @@ public class TileMap : MonoBehaviour
 
     void BuildTexture()
     {
-        int texWidth = 10;
-        int texHeight = 10;
+        int numTilesPerRow = tile.width / tileResolution;
+        int numRows = tile.height / tileResolution;
+
+        int texWidth = size_x * tileResolution;
+        int texHeight = size_z * tileResolution;
         Texture2D texture = new Texture2D(texWidth, texHeight);
 
-        for (int y = 0; y < texHeight; y++)
+        for (int y = 0; y < size_z; y++)
         {
-            for (int x = 0; x < texWidth; x++)
+            for (int x = 0; x < size_x; x++)
             {
-                Color c = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
-                texture.SetPixel(x, y, c);
+                int tileOffset = Random.Range(0, 4) * tileResolution;
+                Color[] p = tile.GetPixels(tileOffset, 0, tileResolution, tileResolution);
+                texture.SetPixels(x * tileResolution, y * tileResolution, tileResolution, tileResolution, p);
             }
             
         }
@@ -103,6 +109,4 @@ public class TileMap : MonoBehaviour
         Debug.Log("Done Mesh!");
         BuildTexture();
     }
-	
-	
 }
